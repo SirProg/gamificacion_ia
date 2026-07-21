@@ -1,0 +1,185 @@
+{
+  "curso": {
+    "nombre": "6.º Grado B — Ciencias Naturales",
+    "docente": "Prof. Laura Méndez",
+    "totalEstudiantes": 24,
+    "unidadActual": "El ciclo del agua y los ecosistemas"
+  },
+  "estadisticasGrupo": {
+    "promedioCalificaciones": 7.8,
+    "tasaParticipacion": 83,
+    "quizzesCompletados": 142,
+    "tiempoAhorradoDocenteHoras": 6.5,
+    "distribucionRendimiento": {
+      "alto": 9,
+      "medio": 11,
+      "bajo": 4
+    },
+    "progresoSemanal": [
+      { "semana": "Sem 1", "promedio": 6.2 },
+      { "semana": "Sem 2", "promedio": 6.9 },
+      { "semana": "Sem 3", "promedio": 7.1 },
+      { "semana": "Sem 4", "promedio": 7.5 },
+      { "semana": "Sem 5", "promedio": 7.8 }
+    ],
+    "temasDificiles": [
+      { "tema": "Evaporación y condensación", "tasaError": 46 },
+      { "tema": "Cadenas alimenticias", "tasaError": 38 },
+      { "tema": "Fotosíntesis", "tasaError": 29 },
+      { "tema": "Estados del agua", "tasaError": 21 },
+      { "tema": "Ciclo del agua (general)", "tasaError": 14 }
+    ],
+    "participacionPorDia": [
+      { "dia": "Lun", "porcentaje": 78 },
+      { "dia": "Mar", "porcentaje": 85 },
+      { "dia": "Mié", "porcentaje": 90 },
+      { "dia": "Jue", "porcentaje": 74 },
+      { "dia": "Vie", "porcentaje": 88 }
+    ]
+  },
+  "estudiantes": [
+    {
+      "id": 1,
+      "nombre": "Sofía Ramírez",
+      "avatar": "🦊",
+      "nivel": 5,
+      "xp": 2450,
+      "xpSiguienteNivel": 2600,
+      "insignias": ["🏅", "🔥", "🧠", "⭐"],
+      "promedio": 9.2,
+      "participacion": 96
+    },
+    {
+      "id": 2,
+      "nombre": "Mateo Fernández",
+      "avatar": "🐼",
+      "nivel": 4,
+      "xp": 1820,
+      "xpSiguienteNivel": 2000,
+      "insignias": ["🏅", "🔥", "🧠"],
+      "promedio": 8.4,
+      "participacion": 91
+    },
+    {
+      "id": 3,
+      "nombre": "Valentina Cruz",
+      "avatar": "🦉",
+      "nivel": 3,
+      "xp": 1240,
+      "xpSiguienteNivel": 1500,
+      "insignias": ["🏅", "⭐"],
+      "promedio": 7.6,
+      "participacion": 84
+    },
+    {
+      "id": 4,
+      "nombre": "Diego Torres",
+      "avatar": "🐨",
+      "nivel": 3,
+      "xp": 1050,
+      "xpSiguienteNivel": 1500,
+      "insignias": ["🏅"],
+      "promedio": 7.1,
+      "participacion": 79
+    },
+    {
+      "id": 5,
+      "nombre": "Camila Rojas",
+      "avatar": "🐝",
+      "nivel": 2,
+      "xp": 640,
+      "xpSiguienteNivel": 900,
+      "insignias": ["🏅"],
+      "promedio": 6.3,
+      "participacion": 68
+    },
+    {
+      "id": 6,
+      "nombre": "Lucas Herrera",
+      "avatar": "🦁",
+      "nivel": 1,
+      "xp": 210,
+      "xpSiguienteNivel": 400,
+      "insignias": [],
+      "promedio": 5.4,
+      "participacion": 52
+    }
+  ],
+  "catalogoInsignias": [
+    { "icono": "🏅", "nombre": "Primer Quiz", "descripcion": "Completaste tu primera evaluación." },
+    { "icono": "🔥", "nombre": "Racha de 3", "descripcion": "3 aciertos seguidos sin fallar." },
+    { "icono": "🧠", "nombre": "Mente Brillante", "descripcion": "Obtuviste 100% en un quiz." },
+    { "icono": "⭐", "nombre": "Estrella del Grupo", "descripcion": "Entre los 3 mejores de la semana." },
+    { "icono": "🚀", "nombre": "Nivel Superado", "descripcion": "Subiste de nivel de gamificación." }
+  ],
+  "gamificacion": {
+    "xpPorAcierto": 100,
+    "xpPorParticipar": 20,
+    "bonusRacha": 50
+  },
+  "quiz": {
+    "titulo": "El ciclo del agua",
+    "materia": "Ciencias Naturales",
+    "preguntas": [
+      {
+        "id": 1,
+        "tema": "Estados del agua",
+        "enunciado": "¿En qué estado se encuentra el agua cuando forma las nubes?",
+        "opciones": ["Sólido", "Líquido y gaseoso", "Únicamente gaseoso", "Plasma"],
+        "respuestaCorrecta": 1,
+        "retroInmediataCorrecta": "¡Correcto! Las nubes contienen diminutas gotas de agua líquida y también vapor.",
+        "retroInmediataIncorrecta": "Casi. Recuerda que en las nubes el agua no está en un solo estado.",
+        "pistaIA": "Piensa en lo que ves cuando respiras aire frío: aparece una nubecita. ¿Es totalmente gas o hay gotitas? Observa que una nube no es transparente como el vapor puro."
+      },
+      {
+        "id": 2,
+        "tema": "Evaporación y condensación",
+        "enunciado": "¿Qué proceso convierte el agua líquida en vapor por acción del calor del Sol?",
+        "opciones": ["Condensación", "Precipitación", "Evaporación", "Filtración"],
+        "respuestaCorrecta": 2,
+        "retroInmediataCorrecta": "¡Muy bien! El calor del Sol hace que el agua suba a la atmósfera como vapor.",
+        "retroInmediataIncorrecta": "No exactamente. Fíjate en la dirección del proceso: de líquido a vapor.",
+        "pistaIA": "Compara dos palabras: una empieza igual que 'evaporar' (formar vapor) y otra que 'condensar' (juntar/enfriar). ¿Cuál describe el agua subiendo por el calor? No te digo cuál es, pero el prefijo te da una gran pista."
+      },
+      {
+        "id": 3,
+        "tema": "Precipitación",
+        "enunciado": "¿Cómo se llama el momento en que el agua cae de las nubes a la Tierra?",
+        "opciones": ["Evaporación", "Precipitación", "Infiltración", "Transpiración"],
+        "respuestaCorrecta": 1,
+        "retroInmediataCorrecta": "¡Exacto! La lluvia, la nieve y el granizo son formas de precipitación.",
+        "retroInmediataIncorrecta": "Revisa cuál palabra se relaciona con algo que 'cae'.",
+        "pistaIA": "La palabra correcta se parece a 'precipitarse', que significa caer rápido. ¿Qué parte del ciclo hace que el agua baje del cielo? Relaciónalo con lo que sientes cuando llueve."
+      },
+      {
+        "id": 4,
+        "tema": "Cadenas alimenticias",
+        "enunciado": "En un ecosistema, ¿quién produce su propio alimento usando la luz del Sol?",
+        "opciones": ["Los herbívoros", "Los hongos", "Las plantas", "Los depredadores"],
+        "respuestaCorrecta": 2,
+        "retroInmediataCorrecta": "¡Correcto! Las plantas son productoras: fabrican su alimento mediante la fotosíntesis.",
+        "retroInmediataIncorrecta": "Piensa en quién NO necesita comerse a otro ser vivo para alimentarse.",
+        "pistaIA": "El productor es el único que fabrica su comida con luz, agua y aire. De las opciones, ¿cuál tiene hojas verdes y raíces? No es un animal ni un hongo. Reflexiona sobre qué necesita la fotosíntesis."
+      },
+      {
+        "id": 5,
+        "tema": "Fotosíntesis",
+        "enunciado": "¿Qué gas liberan las plantas al ambiente durante la fotosíntesis?",
+        "opciones": ["Dióxido de carbono", "Oxígeno", "Nitrógeno", "Metano"],
+        "respuestaCorrecta": 1,
+        "retroInmediataCorrecta": "¡Genial! Las plantas liberan oxígeno, el gas que necesitamos para respirar.",
+        "retroInmediataIncorrecta": "Piensa en qué gas te permite a ti respirar y de dónde viene.",
+        "pistaIA": "Las plantas toman dióxido de carbono y devuelven otro gas que los seres humanos necesitamos para vivir. ¿Cuál respiras tú ahora mismo? La respuesta está muy ligada a por qué cuidamos los bosques."
+      }
+    ]
+  },
+  "chatbot": {
+    "saludo": "¡Hola! Soy Tutor IA 🤖. Estoy aquí para ayudarte a pensar, no para darte las respuestas. ¿En qué pregunta te gustaría que te dé una pista?",
+    "respuestasGenericas": [
+      "Buena pregunta. En lugar de darte la respuesta, intentemos algo: ¿qué palabra clave del enunciado te llama la atención?",
+      "Vamos paso a paso 🧩. Descarta primero las opciones que estés seguro de que son incorrectas. ¿Cuántas te quedan?",
+      "Recuerda lo que vimos en clase sobre el ciclo del agua. Relaciona la pregunta con un ejemplo de tu vida diaria. ¿Se te ocurre alguno?",
+      "No te preocupes por equivocarte, ¡de los errores se aprende! Vuelve a leer la pregunta en voz baja y subraya el verbo principal."
+    ]
+  }
+}

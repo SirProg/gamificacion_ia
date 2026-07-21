@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Docente · EduGamify</title>
+  <meta name="description" content="Analítica del aula en tiempo real para el docente." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app-page">
+  <header class="topbar">
+    <div class="topbar-left">
+      <a class="brand brand-sm" href="index.html">
+        <span class="brand-logo" aria-hidden="true">🎓</span>
+        <span class="brand-name">EduGamify</span>
+      </a>
+      <span class="topbar-divider" aria-hidden="true"></span>
+      <span class="topbar-context" id="curso-nombre">Cargando curso…</span>
+    </div>
+    <div class="topbar-right">
+      <span class="user-chip"><span aria-hidden="true">👩‍🏫</span> <span id="docente-nombre">Docente</span></span>
+      <a href="index.html" class="btn btn-ghost btn-sm">Salir</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-head">
+      <div>
+        <h1>Dashboard de analítica en tiempo real</h1>
+        <p class="page-sub">Visualiza el progreso, los temas difíciles y la participación de tu grupo de un vistazo.</p>
+      </div>
+      <span class="live-badge"><span class="live-dot" aria-hidden="true"></span> En vivo</span>
+    </section>
+
+    <!-- Tarjetas resumen -->
+    <section class="kpi-grid" aria-label="Indicadores del grupo">
+      <article class="kpi-card">
+        <span class="kpi-icon kpi-blue" aria-hidden="true">📈</span>
+        <div>
+          <p class="kpi-value" id="kpi-promedio">–</p>
+          <p class="kpi-label">Promedio del grupo</p>
+        </div>
+      </article>
+      <article class="kpi-card">
+        <span class="kpi-icon kpi-cyan" aria-hidden="true">🙋</span>
+        <div>
+          <p class="kpi-value" id="kpi-participacion">–</p>
+          <p class="kpi-label">Tasa de participación</p>
+        </div>
+      </article>
+      <article class="kpi-card">
+        <span class="kpi-icon kpi-gold" aria-hidden="true">✅</span>
+        <div>
+          <p class="kpi-value" id="kpi-quizzes">–</p>
+          <p class="kpi-label">Quizzes completados</p>
+        </div>
+      </article>
+      <article class="kpi-card">
+        <span class="kpi-icon kpi-green" aria-hidden="true">⏱️</span>
+        <div>
+          <p class="kpi-value" id="kpi-tiempo">–</p>
+          <p class="kpi-label">Horas ahorradas esta semana</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Generador IA -->
+    <section class="ai-panel" aria-labelledby="ai-title">
+      <div class="ai-panel-text">
+        <h2 id="ai-title"><span aria-hidden="true">🤖</span> Generar quiz automáticamente con IA</h2>
+        <p>Sube un PDF con el material de tu clase y la IA creará un cuestionario listo para tus estudiantes. Sin configuraciones complicadas.</p>
+      </div>
+      <div class="ai-panel-actions">
+        <label class="file-drop" id="file-drop">
+          <input type="file" id="pdf-input" accept="application/pdf" hidden />
+          <span aria-hidden="true">📄</span>
+          <span id="file-drop-text">Selecciona un PDF</span>
+        </label>
+        <button type="button" class="btn btn-secondary" id="btn-generar-quiz">Generar quiz con IA</button>
+      </div>
+      <div class="ai-progress" id="ai-progress" hidden>
+        <div class="ai-progress-bar"><span></span></div>
+        <p class="ai-progress-text" id="ai-progress-text">Analizando documento…</p>
+      </div>
+    </section>
+
+    <!-- Gráficos -->
+    <section class="charts-grid">
+      <article class="chart-card">
+        <h2>Progreso del grupo (promedio semanal)</h2>
+        <div class="chart-box"><canvas id="chart-progreso" role="img" aria-label="Gráfico de línea del progreso semanal"></canvas></div>
+      </article>
+      <article class="chart-card">
+        <h2>Temas más difíciles <span class="chart-note">(% de error)</span></h2>
+        <div class="chart-box"><canvas id="chart-temas" role="img" aria-label="Gráfico de barras de temas difíciles"></canvas></div>
+      </article>
+      <article class="chart-card">
+        <h2>Participación por día</h2>
+        <div class="chart-box"><canvas id="chart-participacion" role="img" aria-label="Gráfico de barras de participación por día"></canvas></div>
+      </article>
+      <article class="chart-card">
+        <h2>Distribución del rendimiento</h2>
+        <div class="chart-box"><canvas id="chart-distribucion" role="img" aria-label="Gráfico circular de distribución del rendimiento"></canvas></div>
+      </article>
+    </section>
+
+    <!-- Tabla de estudiantes -->
+    <section class="table-card" aria-labelledby="tabla-title">
+      <h2 id="tabla-title">Progreso individual y gamificación</h2>
+      <div class="table-scroll">
+        <table class="students-table">
+          <thead>
+            <tr>
+              <th scope="col">Estudiante</th>
+              <th scope="col">Nivel</th>
+              <th scope="col">XP</th>
+              <th scope="col">Insignias</th>
+              <th scope="col">Promedio</th>
+              <th scope="col">Participación</th>
+            </tr>
+          </thead>
+          <tbody id="students-tbody">
+            <tr><td colspan="6" class="table-empty">Cargando estudiantes…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Chart.js (open source) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

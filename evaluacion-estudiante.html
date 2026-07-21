@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Reto · EduGamify</title>
+  <meta name="description" content="Reto gamificado del estudiante con retroalimentación inmediata y tutor IA." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app-page student-page">
+  <header class="topbar">
+    <div class="topbar-left">
+      <a class="brand brand-sm" href="index.html">
+        <span class="brand-logo" aria-hidden="true">🎓</span>
+        <span class="brand-name">EduGamify</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <span class="user-chip" id="student-chip"><span aria-hidden="true">🧑‍🎓</span> <span id="student-name">Estudiante</span></span>
+      <a href="index.html" class="btn btn-ghost btn-sm">Salir</a>
+    </div>
+  </header>
+
+  <main class="container student-container">
+    <!-- Panel de gamificación -->
+    <section class="game-hud" aria-label="Tu progreso de juego">
+      <div class="hud-avatar" id="hud-avatar" aria-hidden="true">🦊</div>
+      <div class="hud-main">
+        <div class="hud-top">
+          <span class="hud-level">Nivel <strong id="hud-level">1</strong></span>
+          <span class="hud-xp"><strong id="hud-xp">0</strong> XP</span>
+        </div>
+        <div class="xp-bar" role="progressbar" aria-label="Barra de experiencia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="xp-bar">
+          <span class="xp-bar-fill" id="xp-bar-fill"></span>
+        </div>
+        <p class="hud-hint" id="hud-hint">Responde bien para ganar XP y subir de nivel.</p>
+      </div>
+      <div class="hud-badges" id="hud-badges" aria-label="Insignias obtenidas"></div>
+    </section>
+
+    <!-- Zona del quiz -->
+    <section class="quiz-card" aria-labelledby="quiz-title">
+      <div class="quiz-head">
+        <div>
+          <p class="quiz-eyebrow" id="quiz-materia">Ciencias Naturales</p>
+          <h1 id="quiz-title">El ciclo del agua</h1>
+        </div>
+        <div class="quiz-progress">
+          <span id="quiz-counter">Pregunta 1 / 5</span>
+          <div class="quiz-steps" id="quiz-steps" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div id="quiz-body">
+        <p class="question-tema" id="question-tema">Tema</p>
+        <h2 class="question-text" id="question-text">Cargando pregunta…</h2>
+        <ul class="options-list" id="options-list"></ul>
+
+        <div class="feedback" id="feedback" hidden>
+          <p class="feedback-text" id="feedback-text"></p>
+          <p class="feedback-xp" id="feedback-xp"></p>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn btn-ghost" id="btn-tutor" hidden>🤖 Pedir una pista al Tutor IA</button>
+          <button type="button" class="btn btn-primary" id="btn-next" disabled>Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Pantalla de resultados -->
+      <div id="quiz-result" class="quiz-result" hidden>
+        <div class="result-trophy" aria-hidden="true">🏆</div>
+        <h2 id="result-title">¡Reto completado!</h2>
+        <p class="result-score" id="result-score"></p>
+        <div class="result-rewards">
+          <div class="result-xp-gained">+<span id="result-xp">0</span> XP ganados</div>
+          <div class="result-badges" id="result-badges"></div>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-retry">Volver a intentar</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Botón flotante Tutor IA -->
+  <button type="button" class="fab" id="fab-chat" aria-label="Abrir Asistente IA">
+    <span aria-hidden="true">🤖</span>
+    <span class="fab-pulse" aria-hidden="true"></span>
+  </button>
+
+  <!-- Panel del chatbot -->
+  <aside class="chatbot" id="chatbot" hidden aria-label="Asistente IA">
+    <header class="chatbot-head">
+      <span class="chatbot-title"><span aria-hidden="true">🤖</span> Tutor IA <span class="chatbot-tag">apoyo, no respuestas</span></span>
+      <button type="button" class="chatbot-close" id="chatbot-close" aria-label="Cerrar asistente">✕</button>
+    </header>
+    <div class="chatbot-body" id="chatbot-body" aria-live="polite"></div>
+    <form class="chatbot-form" id="chatbot-form">
+      <input type="text" id="chatbot-input" placeholder="Escribe tu duda…" autocomplete="off" aria-label="Mensaje para el tutor" />
+      <button type="submit" class="btn btn-secondary btn-sm" aria-label="Enviar">➤</button>
+    </form>
+  </aside>
+
+  <!-- Toast de logros -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

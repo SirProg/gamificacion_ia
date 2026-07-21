@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduGamify · Plataforma Integrada de Gamificación Educativa</title>
+  <meta name="description" content="Democratizando la IA en la educación básica: menos carga administrativa, más motivación estudiantil." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="login-page">
+  <main class="login-wrapper">
+    <section class="login-hero" aria-labelledby="hero-title">
+      <div class="brand">
+        <span class="brand-logo" aria-hidden="true">🎓</span>
+        <span class="brand-name">EduGamify</span>
+      </div>
+      <h1 id="hero-title">Plataforma Integrada de Gamificación Educativa y Visualización Docente</h1>
+      <p class="hero-subtitle">
+        Democratizamos el uso de la Inteligencia Artificial en la educación básica:
+        menos tiempo en tareas administrativas para el docente, más motivación para el estudiante.
+      </p>
+      <ul class="hero-features">
+        <li><span aria-hidden="true">📊</span> Analítica del aula en tiempo real</li>
+        <li><span aria-hidden="true">🤖</span> Quizzes generados con IA a partir de un PDF</li>
+        <li><span aria-hidden="true">🏆</span> Motor de gamificación parametrizable</li>
+      </ul>
+    </section>
+
+    <section class="login-card" aria-labelledby="login-title">
+      <h2 id="login-title">Iniciar sesión</h2>
+      <p class="login-hint">Prototipo funcional · selecciona un perfil de acceso</p>
+
+      <form id="login-form" class="login-form" novalidate>
+        <label class="field">
+          <span>Correo institucional</span>
+          <input type="email" name="email" placeholder="usuario@escuela.edu" autocomplete="username" />
+        </label>
+        <label class="field">
+          <span>Contraseña</span>
+          <input type="password" name="password" placeholder="••••••••" autocomplete="current-password" />
+        </label>
+
+        <fieldset class="role-select">
+          <legend>Ingresar como</legend>
+          <div class="role-options">
+            <button type="button" class="role-btn is-active" data-target="dashboard-docente.html" data-role="docente">
+              <span class="role-icon" aria-hidden="true">👩‍🏫</span>
+              <span class="role-label">Docente</span>
+              <span class="role-desc">Dashboard de analítica</span>
+            </button>
+            <button type="button" class="role-btn" data-target="evaluacion-estudiante.html" data-role="estudiante">
+              <span class="role-icon" aria-hidden="true">🧑‍🎓</span>
+              <span class="role-label">Estudiante</span>
+              <span class="role-desc">Reto gamificado</span>
+            </button>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary btn-block">Entrar a la plataforma</button>
+        <p class="login-foot">Acceso de demostración · no se requieren credenciales reales.</p>
+      </form>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
