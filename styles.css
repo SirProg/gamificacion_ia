@@ -42,6 +42,9 @@
 
 * { box-sizing: border-box; }
 
+/* El atributo hidden siempre gana sobre display:flex/grid de los componentes */
+[hidden] { display: none !important; }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -347,7 +350,15 @@ img { max-width: 100%; }
 .feedback-text { margin: 0; font-weight: 600; }
 .feedback-xp { margin: .3rem 0 0; font-size: .85rem; color: var(--gold); font-weight: 700; }
 
+.quiz-toolbar { display: flex; align-items: center; justify-content: space-between; gap: .8rem; margin-bottom: 1.1rem; flex-wrap: wrap; }
+.quiz-toolbar-hint { font-size: .78rem; color: var(--text-muted); }
+
 .quiz-actions { display: flex; justify-content: space-between; align-items: center; gap: .8rem; margin-top: 1.3rem; flex-wrap: wrap; }
+.quiz-actions-end { justify-content: flex-end; }
+
+/* Opciones eliminadas por 50/50 */
+.option-btn.eliminated { opacity: .4; text-decoration: line-through; border-style: dashed; background: #f5f6f7; }
+.option-btn.eliminated .option-key { background: #dfe3e7; color: #9aa5b1; }
 
 /* Resultado */
 .quiz-result { text-align: center; padding: 1.5rem 0; }
@@ -395,6 +406,22 @@ img { max-width: 100%; }
 .chat-msg.bot { background: var(--tech-soft); color: var(--text); border-bottom-left-radius: 4px; align-self: flex-start; }
 .chat-msg.user { background: var(--primary); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
 .chat-typing { align-self: flex-start; color: var(--text-muted); font-size: .82rem; font-style: italic; }
+/* Chips de acciones rápidas del Tutor IA */
+.chatbot-actions {
+  display: flex; gap: .4rem; padding: .6rem .7rem; overflow-x: auto;
+  border-top: 1px solid var(--border); background: var(--surface);
+  scrollbar-width: thin;
+}
+.chip {
+  flex-shrink: 0; white-space: nowrap; cursor: pointer; font-family: inherit;
+  border: 1.5px solid var(--tech-mid); color: var(--tech-deep); background: var(--tech-soft);
+  border-radius: 999px; padding: .4rem .75rem; font-size: .8rem; font-weight: 600;
+  transition: background .18s, transform .12s;
+}
+.chip:hover { background: #dcecf1; transform: translateY(-1px); }
+.chip:active { transform: translateY(0); }
+.chip.chip-highlight { background: var(--gold-soft); border-color: var(--gold-light); color: var(--gold); }
+
 .chatbot-form { display: flex; gap: .5rem; padding: .7rem; border-top: 1px solid var(--border); background: var(--surface); }
 .chatbot-form input { flex: 1; border: 1.5px solid var(--border); border-radius: 999px; padding: .55rem .9rem; font-size: .9rem; font-family: inherit; }
 .chatbot-form input:focus { outline: none; border-color: var(--primary); }
@@ -408,6 +435,75 @@ img { max-width: 100%; }
   opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================================
+   MODAL · Material de estudio
+   ============================================================ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(20, 40, 60, .5);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+  animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+  background: var(--surface); border-radius: var(--radius);
+  width: 100%; max-width: 560px; max-height: 86vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg); padding: 1.4rem; animation: slideUp .28s ease;
+}
+.modal-head { display: flex; align-items: center; justify-content: space-between; }
+.modal-head h2 { font-size: 1.25rem; }
+.modal-head .chatbot-close { color: var(--text-muted); font-size: 1.2rem; }
+.modal-sub { color: var(--text-muted); font-size: .9rem; margin-bottom: 1rem; }
+
+.material-list { display: grid; gap: .8rem; }
+.material-card {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  overflow: hidden; transition: box-shadow .2s;
+}
+.material-card.is-recommended { border-color: var(--gold-light); box-shadow: 0 0 0 2px var(--gold-soft); }
+.material-card-head { display: flex; gap: .85rem; align-items: center; padding: .85rem; cursor: pointer; }
+.material-thumb {
+  flex-shrink: 0; width: 54px; height: 54px; border-radius: 10px;
+  display: grid; place-items: center; font-size: 1.5rem;
+}
+.material-thumb.video { background: linear-gradient(135deg, var(--tech-mid), var(--primary)); color: #fff; position: relative; }
+.material-thumb.documento { background: var(--gold-soft); }
+.material-info { flex: 1; min-width: 0; }
+.material-info h3 { font-size: .98rem; margin: 0 0 .15rem; }
+.material-info p { font-size: .82rem; color: var(--text-muted); margin: 0; }
+.material-meta { display: flex; gap: .5rem; align-items: center; margin-top: .3rem; flex-wrap: wrap; }
+.material-tag { font-size: .68rem; font-weight: 700; padding: .12rem .5rem; border-radius: 999px; }
+.material-tag.video { background: var(--primary-soft); color: var(--primary-dark); }
+.material-tag.documento { background: var(--gold-soft); color: var(--gold); }
+.material-tag.tema { background: #eef1f4; color: var(--text-muted); }
+.material-tag.reco { background: var(--gold-light); color: #fff; }
+.material-chevron { color: var(--text-muted); font-size: 1.1rem; transition: transform .2s; }
+.material-card.open .material-chevron { transform: rotate(90deg); }
+
+/* Contenido expandible (reproductor / documento simulado) */
+.material-detail { display: none; padding: 0 .85rem .95rem; }
+.material-card.open .material-detail { display: block; }
+.video-player {
+  position: relative; border-radius: 10px; overflow: hidden;
+  background: linear-gradient(135deg, #1f3d4c, #0374b5);
+  aspect-ratio: 16 / 9; display: grid; place-items: center; color: #fff; text-align: center;
+}
+.video-player .play-btn {
+  width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,.9); color: var(--primary); font-size: 1.4rem;
+  display: grid; place-items: center; box-shadow: var(--shadow-md); transition: transform .15s;
+}
+.video-player .play-btn:hover { transform: scale(1.1); }
+.video-player .playing-note { font-weight: 600; }
+.video-player .video-caption { position: absolute; bottom: 8px; left: 10px; font-size: .72rem; opacity: .85; }
+.doc-preview {
+  background: #fbfcfd; border: 1px solid var(--border); border-radius: 8px;
+  padding: .9rem; font-size: .88rem; color: var(--text);
+}
+.doc-preview .doc-line { height: 8px; background: #e9edf1; border-radius: 4px; margin: .5rem 0; }
+.doc-preview .doc-line.short { width: 60%; }
+.demo-note { font-size: .72rem; color: var(--text-muted); margin-top: .5rem; font-style: italic; }
 
 /* ============================================================
    RESPONSIVE

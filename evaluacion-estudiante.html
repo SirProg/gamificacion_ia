@@ -51,6 +51,11 @@
         </div>
       </div>
 
+      <div class="quiz-toolbar">
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-material">📚 Ver material de estudio</button>
+        <span class="quiz-toolbar-hint">¿Dudas? Abre el 🤖 Tutor IA abajo a la derecha.</span>
+      </div>
+
       <div id="quiz-body">
         <p class="question-tema" id="question-tema">Tema</p>
         <h2 class="question-text" id="question-text">Cargando pregunta…</h2>
@@ -61,8 +66,7 @@
           <p class="feedback-xp" id="feedback-xp"></p>
         </div>
 
-        <div class="quiz-actions">
-          <button type="button" class="btn btn-ghost" id="btn-tutor" hidden>🤖 Pedir una pista al Tutor IA</button>
+        <div class="quiz-actions quiz-actions-end">
           <button type="button" class="btn btn-primary" id="btn-next" disabled>Siguiente</button>
         </div>
       </div>
@@ -94,6 +98,13 @@
       <button type="button" class="chatbot-close" id="chatbot-close" aria-label="Cerrar asistente">✕</button>
     </header>
     <div class="chatbot-body" id="chatbot-body" aria-live="polite"></div>
+    <div class="chatbot-actions" id="chatbot-actions" role="group" aria-label="Acciones rápidas del Tutor IA">
+      <button type="button" class="chip" data-action="fifty">🎯 50/50</button>
+      <button type="button" class="chip" data-action="hint">💡 Pista breve</button>
+      <button type="button" class="chip" data-action="concept">📖 Explícame el concepto</button>
+      <button type="button" class="chip" data-action="guide">❓ Pregunta guía</button>
+      <button type="button" class="chip" data-action="material">📚 Material de estudio</button>
+    </div>
     <form class="chatbot-form" id="chatbot-form">
       <input type="text" id="chatbot-input" placeholder="Escribe tu duda…" autocomplete="off" aria-label="Mensaje para el tutor" />
       <button type="submit" class="btn btn-secondary btn-sm" aria-label="Enviar">➤</button>
@@ -102,6 +113,18 @@
 
   <!-- Toast de logros -->
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Modal: Material de estudio del profesor -->
+  <div class="modal-overlay" id="material-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="material-title">
+      <header class="modal-head">
+        <h2 id="material-title"><span aria-hidden="true">📚</span> Material de estudio</h2>
+        <button type="button" class="chatbot-close" id="material-close" aria-label="Cerrar material">✕</button>
+      </header>
+      <p class="modal-sub">Documentos y videos que subió tu profesor. Repásalos cuando lo necesites.</p>
+      <div class="material-list" id="material-list"></div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

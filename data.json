@@ -117,6 +117,48 @@
     "xpPorParticipar": 20,
     "bonusRacha": 50
   },
+  "materialEstudio": [
+    {
+      "tema": "Ciclo del agua (general)",
+      "tipo": "video",
+      "titulo": "El viaje de una gota de agua",
+      "descripcion": "Video explicativo del ciclo completo del agua, paso a paso.",
+      "duracion": "4:35",
+      "autor": "Prof. Laura Méndez"
+    },
+    {
+      "tema": "Estados del agua",
+      "tipo": "video",
+      "titulo": "Los 3 estados del agua en 3 minutos",
+      "descripcion": "Animación corta sobre el agua sólida, líquida y gaseosa.",
+      "duracion": "3:04",
+      "autor": "Prof. Laura Méndez"
+    },
+    {
+      "tema": "Evaporación y condensación",
+      "tipo": "video",
+      "titulo": "Evaporación vs. condensación",
+      "descripcion": "Experimento en clase con agua caliente y una tapa fría.",
+      "duracion": "3:12",
+      "autor": "Prof. Laura Méndez"
+    },
+    {
+      "tema": "Fotosíntesis",
+      "tipo": "documento",
+      "titulo": "Guía: ¿Cómo respiran las plantas?",
+      "descripcion": "Resumen ilustrado de la fotosíntesis y el intercambio de gases.",
+      "paginas": 2,
+      "autor": "Prof. Laura Méndez"
+    },
+    {
+      "tema": "Cadenas alimenticias",
+      "tipo": "documento",
+      "titulo": "Productores, consumidores y descomponedores",
+      "descripcion": "Infografía con un ejemplo real de cadena alimenticia.",
+      "paginas": 3,
+      "autor": "Prof. Laura Méndez"
+    }
+  ],
   "quiz": {
     "titulo": "El ciclo del agua",
     "materia": "Ciencias Naturales",
@@ -129,6 +171,9 @@
         "respuestaCorrecta": 1,
         "retroInmediataCorrecta": "¡Correcto! Las nubes contienen diminutas gotas de agua líquida y también vapor.",
         "retroInmediataIncorrecta": "Casi. Recuerda que en las nubes el agua no está en un solo estado.",
+        "pistaBreve": "Observa que una nube no es transparente: contiene gotitas que sí puedes ver.",
+        "explicacionConcepto": "El agua existe en tres estados: sólido (hielo), líquido (gotas) y gaseoso (vapor invisible). En una nube conviven vapor y millones de gotitas de agua líquida; por eso la ves blanca en el cielo.",
+        "preguntaGuia": "Si el vapor de agua es totalmente invisible, ¿por qué crees que sí podemos ver una nube?",
         "pistaIA": "Piensa en lo que ves cuando respiras aire frío: aparece una nubecita. ¿Es totalmente gas o hay gotitas? Observa que una nube no es transparente como el vapor puro."
       },
       {
@@ -139,7 +184,10 @@
         "respuestaCorrecta": 2,
         "retroInmediataCorrecta": "¡Muy bien! El calor del Sol hace que el agua suba a la atmósfera como vapor.",
         "retroInmediataIncorrecta": "No exactamente. Fíjate en la dirección del proceso: de líquido a vapor.",
-        "pistaIA": "Compara dos palabras: una empieza igual que 'evaporar' (formar vapor) y otra que 'condensar' (juntar/enfriar). ¿Cuál describe el agua subiendo por el calor? No te digo cuál es, pero el prefijo te da una gran pista."
+        "pistaBreve": "El prefijo de la palabra correcta se parece mucho a 'vapor'.",
+        "explicacionConcepto": "La evaporación es el paso de líquido a gas gracias al calor. La condensación es lo contrario: el vapor se enfría y vuelve a líquido. El Sol aporta la energía que hace subir el agua a la atmósfera.",
+        "preguntaGuia": "¿Qué crees que le pasa a un charco de agua en un día muy soleado y a dónde se va ese agua?",
+        "pistaIA": "Compara dos palabras: una empieza igual que 'evaporar' (formar vapor) y otra que 'condensar' (enfriar y juntar). ¿Cuál describe el agua subiendo por el calor? El prefijo te da una gran pista."
       },
       {
         "id": 3,
@@ -149,6 +197,9 @@
         "respuestaCorrecta": 1,
         "retroInmediataCorrecta": "¡Exacto! La lluvia, la nieve y el granizo son formas de precipitación.",
         "retroInmediataIncorrecta": "Revisa cuál palabra se relaciona con algo que 'cae'.",
+        "pistaBreve": "Piensa en la palabra 'precipitarse', que significa caer rápido.",
+        "explicacionConcepto": "La precipitación ocurre cuando las gotitas de las nubes se juntan, pesan demasiado y caen. Según la temperatura puede ser lluvia, nieve o granizo.",
+        "preguntaGuia": "Cuando las gotitas de una nube se vuelven grandes y pesadas, ¿hacia dónde crees que se moverán?",
         "pistaIA": "La palabra correcta se parece a 'precipitarse', que significa caer rápido. ¿Qué parte del ciclo hace que el agua baje del cielo? Relaciónalo con lo que sientes cuando llueve."
       },
       {
@@ -159,7 +210,10 @@
         "respuestaCorrecta": 2,
         "retroInmediataCorrecta": "¡Correcto! Las plantas son productoras: fabrican su alimento mediante la fotosíntesis.",
         "retroInmediataIncorrecta": "Piensa en quién NO necesita comerse a otro ser vivo para alimentarse.",
-        "pistaIA": "El productor es el único que fabrica su comida con luz, agua y aire. De las opciones, ¿cuál tiene hojas verdes y raíces? No es un animal ni un hongo. Reflexiona sobre qué necesita la fotosíntesis."
+        "pistaBreve": "Busca el ser vivo que tiene hojas verdes y raíces.",
+        "explicacionConcepto": "En una cadena alimenticia, los productores fabrican su propio alimento con luz solar (fotosíntesis). Los animales son consumidores porque dependen de comerse a otros seres vivos para obtener energía.",
+        "preguntaGuia": "De las opciones, ¿cuál es la única que no necesita comerse a otro ser vivo para conseguir energía?",
+        "pistaIA": "El productor es el único que fabrica su comida con luz, agua y aire. De las opciones, ¿cuál tiene hojas verdes y raíces? No es un animal ni un hongo."
       },
       {
         "id": 5,
@@ -169,16 +223,20 @@
         "respuestaCorrecta": 1,
         "retroInmediataCorrecta": "¡Genial! Las plantas liberan oxígeno, el gas que necesitamos para respirar.",
         "retroInmediataIncorrecta": "Piensa en qué gas te permite a ti respirar y de dónde viene.",
+        "pistaBreve": "Es justo el gas que tú necesitas para poder respirar.",
+        "explicacionConcepto": "En la fotosíntesis la planta toma dióxido de carbono, agua y luz solar, fabrica su alimento y libera oxígeno. Por eso los bosques son tan importantes para el aire que respiramos.",
+        "preguntaGuia": "Si las plantas absorben dióxido de carbono, ¿qué gas necesario para los humanos crees que devuelven al aire?",
         "pistaIA": "Las plantas toman dióxido de carbono y devuelven otro gas que los seres humanos necesitamos para vivir. ¿Cuál respiras tú ahora mismo? La respuesta está muy ligada a por qué cuidamos los bosques."
       }
     ]
   },
   "chatbot": {
-    "saludo": "¡Hola! Soy Tutor IA 🤖. Estoy aquí para ayudarte a pensar, no para darte las respuestas. ¿En qué pregunta te gustaría que te dé una pista?",
+    "saludo": "¡Hola! Soy Tutor IA 🤖. Estoy para ayudarte a pensar, no para darte las respuestas. Usa los botones de abajo o escríbeme tu duda.",
+    "menu": "¿Con qué te ayudo? Puedes tocar: 🎯 50/50, 💡 Pista breve, 📖 Explícame el concepto, ❓ Pregunta guía o 📚 Material de estudio.",
     "respuestasGenericas": [
       "Buena pregunta. En lugar de darte la respuesta, intentemos algo: ¿qué palabra clave del enunciado te llama la atención?",
       "Vamos paso a paso 🧩. Descarta primero las opciones que estés seguro de que son incorrectas. ¿Cuántas te quedan?",
-      "Recuerda lo que vimos en clase sobre el ciclo del agua. Relaciona la pregunta con un ejemplo de tu vida diaria. ¿Se te ocurre alguno?",
+      "Recuerda lo que vimos en clase sobre el ciclo del agua. Relaciónalo con un ejemplo de tu vida diaria. ¿Se te ocurre alguno?",
       "No te preocupes por equivocarte, ¡de los errores se aprende! Vuelve a leer la pregunta en voz baja y subraya el verbo principal."
     ]
   }

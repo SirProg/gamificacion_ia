@@ -270,6 +270,9 @@
       newBadges: [],
     };
 
+    // Control del comodín 50/50 (una vez por pregunta)
+    const fiftyUsed = new Set();
+
     // ----- Refs DOM -----
     const el = {
       studentName: id("student-name"),
@@ -290,7 +293,6 @@
       feedback: id("feedback"),
       feedbackText: id("feedback-text"),
       feedbackXP: id("feedback-xp"),
-      btnTutor: id("btn-tutor"),
       btnNext: id("btn-next"),
       quizBody: id("quiz-body"),
       result: id("quiz-result"),
@@ -323,7 +325,6 @@
       el.tema.textContent = q.tema;
       el.qText.textContent = q.enunciado;
       el.feedback.hidden = true;
-      el.btnTutor.hidden = true;
       el.btnNext.disabled = true;
       el.btnNext.textContent = state.index === quiz.preguntas.length - 1 ? "Ver resultados 🏆" : "Siguiente";
 
@@ -376,7 +377,6 @@
         el.feedback.className = "feedback ok";
         el.feedbackText.textContent = q.retroInmediataCorrecta;
         el.feedbackXP.textContent = `+${gained} XP${bonusMsg}`;
-        el.btnTutor.hidden = true;
       } else {
         btn.classList.add("wrong");
         buttons[q.respuestaCorrecta].classList.add("correct");
@@ -388,10 +388,7 @@
 
         el.feedback.className = "feedback no";
         el.feedbackText.textContent = q.retroInmediataIncorrecta;
-        el.feedbackXP.textContent = `+${gained} XP por intentarlo · No te rindas, revisa la pista del Tutor IA.`;
-        // Ofrecer ayuda didáctica del tutor
-        el.btnTutor.hidden = false;
-        el.btnTutor.onclick = () => openTutorWithHint(q);
+        el.feedbackXP.textContent = `+${gained} XP por intentarlo · No te rindas, abre el 🤖 Tutor IA para una pista.`;
       }
 
       el.btnNext.disabled = false;
@@ -433,6 +430,7 @@
       state.xpGained = 0;
       state.currentXP = state.startXP;
       state.newBadges = [];
+      fiftyUsed.clear();
       el.quizBody.hidden = false;
       el.result.hidden = true;
       updateHUD();
@@ -493,17 +491,164 @@
       }, 2600);
     }
 
-    // ----- Chatbot / Tutor IA -----
-    setupChatbot(data.chatbot, () => quiz.preguntas[state.index]);
+    // ----- Acciones interactivas del Tutor IA -----
+    const actions = {
+      // 50/50: elimina dos opciones incorrectas de la pregunta actual
+      fifty() {
+        const q = quiz.preguntas[state.index];
+        if (state.answered) {
+          addBotMessage("Esta pregunta ya la respondiste 😊. Guarda el 50/50 para la siguiente.");
+          return;
+        }
+        if (fiftyUsed.has(state.index)) {
+          addBotMessage("Ya usaste el 50/50 en esta pregunta. ¡Confía en tu razonamiento! 💪");
+          return;
+        }
+        const buttons = Array.from(el.options.querySelectorAll(".option-btn"));
+        const wrong = buttons
+          .map((b, i) => i)
+          .filter((i) => i !== q.respuestaCorrecta && !buttons[i].classList.contains("eliminated"));
+        // Dejar la correcta + 1 incorrecta => eliminar el resto
+        shuffle(wrong);
+        const toRemove = wrong.slice(0, Math.max(1, wrong.length - 1));
+        toRemove.forEach((i) => {
+          buttons[i].classList.add("eliminated");
+          buttons[i].disabled = true;
+        });
+        fiftyUsed.add(state.index);
+        addBotMessage(`🎯 Eliminé ${toRemove.length} opción(es) incorrecta(s). ¡Ahora tienes muchas más probabilidades! Piensa bien entre las que quedan.`);
+      },
+      // Pista breve
+      hint() {
+        addBotMessage("💡 Pista breve: " + quiz.preguntas[state.index].pistaBreve);
+      },
+      // Explicación del concepto
+      concept() {
+        addBotMessage("📖 " + quiz.preguntas[state.index].explicacionConcepto);
+      },
+      // Pregunta guía (socrática)
+      guide() {
+        addBotMessage("❓ Para pensarlo tú: " + quiz.preguntas[state.index].preguntaGuia);
+      },
+      // Abrir material de estudio del profesor
+      material() {
+        openMaterialModal(quiz.preguntas[state.index].tema);
+      },
+    };
 
-    function openTutorWithHint(q) {
-      openChatbot();
-      addBotMessage(`Veo que esta pregunta sobre "${q.tema}" te costó. Aquí va una pista para que la pienses tú: 💡`);
-      setTimeout(() => addBotMessage(q.pistaIA), 700);
-    }
+    // ----- Chatbot / Tutor IA -----
+    setupChatbot(data.chatbot, () => quiz.preguntas[state.index], actions);
+
+    // ----- Modal de material de estudio -----
+    setupMaterialModal(data.materialEstudio);
+    id("btn-material").addEventListener("click", () =>
+      openMaterialModal(quiz.preguntas[state.index].tema)
+    );
 
     // Iniciar
     renderQuestion();
+  }
+
+  /* ----- Modal de material de estudio (vista estudiante) ----- */
+  let _materialData = [];
+  function setupMaterialModal(material) {
+    _materialData = material || [];
+    const overlay = id("material-modal");
+    const closeBtn = id("material-close");
+    if (!overlay) return;
+    closeBtn.addEventListener("click", () => (overlay.hidden = true));
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.hidden = true;
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !overlay.hidden) overlay.hidden = true;
+    });
+  }
+
+  function openMaterialModal(temaActual) {
+    const overlay = id("material-modal");
+    const list = id("material-list");
+    if (!overlay || !list) return;
+
+    // Recomendados (del tema actual) primero
+    const items = _materialData
+      .slice()
+      .sort((a, b) => (b.tema === temaActual ? 1 : 0) - (a.tema === temaActual ? 1 : 0));
+
+    list.innerHTML = "";
+    items.forEach((m) => {
+      const reco = m.tema === temaActual;
+      const meta = m.tipo === "video"
+        ? `⏱️ ${m.duracion}`
+        : `📄 ${m.paginas} pág.`;
+      const card = document.createElement("div");
+      card.className = "material-card" + (reco ? " is-recommended" : "");
+      card.innerHTML = `
+        <div class="material-card-head">
+          <div class="material-thumb ${m.tipo}">${m.tipo === "video" ? "▶" : "📘"}</div>
+          <div class="material-info">
+            <h3>${m.titulo}</h3>
+            <p>${m.descripcion}</p>
+            <div class="material-meta">
+              <span class="material-tag ${m.tipo}">${m.tipo === "video" ? "Video" : "Documento"}</span>
+              <span class="material-tag tema">${m.tema}</span>
+              ${reco ? '<span class="material-tag reco">Recomendado ahora</span>' : ""}
+              <span class="material-tag tema">${meta}</span>
+            </div>
+          </div>
+          <span class="material-chevron" aria-hidden="true">›</span>
+        </div>
+        <div class="material-detail">
+          ${m.tipo === "video" ? videoPlayerHTML(m) : docPreviewHTML(m)}
+        </div>`;
+
+      const head = card.querySelector(".material-card-head");
+      head.addEventListener("click", () => card.classList.toggle("open"));
+
+      // Reproductor simulado
+      const playBtn = card.querySelector(".play-btn");
+      if (playBtn) {
+        playBtn.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          card.classList.add("open");
+          const player = card.querySelector(".video-player");
+          player.innerHTML = `<p class="playing-note">▶ Reproduciendo…</p>
+            <span class="video-caption">${m.titulo} · ${m.autor}</span>`;
+        });
+      }
+      list.appendChild(card);
+    });
+
+    overlay.hidden = false;
+  }
+
+  function videoPlayerHTML(m) {
+    return `
+      <div class="video-player">
+        <button type="button" class="play-btn" aria-label="Reproducir video">▶</button>
+        <span class="video-caption">${m.titulo} · ${m.autor}</span>
+      </div>
+      <p class="demo-note">Video de demostración subido por ${m.autor}.</p>`;
+  }
+
+  function docPreviewHTML(m) {
+    return `
+      <div class="doc-preview">
+        <strong>${m.titulo}</strong>
+        <div class="doc-line"></div>
+        <div class="doc-line"></div>
+        <div class="doc-line short"></div>
+        <div class="doc-line"></div>
+      </div>
+      <p class="demo-note">Documento de ${m.paginas} páginas subido por ${m.autor}.</p>`;
+  }
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   }
 
   /* ----- Chatbot (compartido dentro de la vista estudiante) ----- */
@@ -533,34 +678,52 @@
     }, 550);
   }
 
-  function setupChatbot(chatData, getCurrentQuestion) {
+  function setupChatbot(chatData, getCurrentQuestion, actions) {
     const fab = id("fab-chat");
     const panel = id("chatbot");
     const closeBtn = id("chatbot-close");
     const form = id("chatbot-form");
     const input = id("chatbot-input");
     const body = id("chatbot-body");
+    const chips = id("chatbot-actions");
     if (!fab || !panel) return;
 
     let greeted = false;
 
+    function greet() {
+      if (greeted) return;
+      greeted = true;
+      addBotMessage(chatData.saludo);
+    }
+
     function toggle() {
       panel.hidden = !panel.hidden;
       _chatOpen = !panel.hidden;
-      if (!panel.hidden && !greeted) {
-        greeted = true;
-        addBotMessage(chatData.saludo);
-      }
+      if (!panel.hidden) greet();
     }
 
-    fab.addEventListener("click", () => {
-      if (panel.hidden && !greeted) { greeted = true; panel.hidden = false; _chatOpen = true; addBotMessage(chatData.saludo); }
-      else toggle();
-    });
+    fab.addEventListener("click", toggle);
     closeBtn.addEventListener("click", () => { panel.hidden = true; _chatOpen = false; });
 
+    // Chips de acciones rápidas: 50/50, pista, concepto, pregunta guía, material
+    if (chips && actions) {
+      chips.addEventListener("click", (e) => {
+        const btn = e.target.closest(".chip");
+        if (!btn) return;
+        const map = {
+          fifty: actions.fifty,
+          hint: actions.hint,
+          concept: actions.concept,
+          guide: actions.guide,
+          material: actions.material,
+        };
+        const fn = map[btn.dataset.action];
+        if (fn) fn();
+      });
+    }
+
     // Exponer para openChatbot desde el tutor
-    window.__eduGreet = () => { if (!greeted) { greeted = true; addBotMessage(chatData.saludo); } };
+    window.__eduGreet = greet;
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
