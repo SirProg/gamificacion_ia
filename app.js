@@ -7,6 +7,7 @@
   "use strict";
 
   const DATA_URL = "data.json";
+  const TUTOR_HELP_LIMIT = 5;
 
   /* Utilidad: cargar el "backend" simulado */
   async function loadData() {
@@ -269,6 +270,7 @@
       xpToNext: perfil.xpSiguienteNivel,
       newBadges: [],
     };
+    let chatbotController;
 
     // Control del comodín 50/50 (una vez por pregunta)
     const fiftyUsed = new Set();
@@ -431,6 +433,7 @@
       state.currentXP = state.startXP;
       state.newBadges = [];
       fiftyUsed.clear();
+      chatbotController?.resetHelpLimit();
       el.quizBody.hidden = false;
       el.result.hidden = true;
       updateHUD();
@@ -537,7 +540,11 @@
     };
 
     // ----- Chatbot / Tutor IA -----
-    setupChatbot(data.chatbot, () => quiz.preguntas[state.index], actions);
+    chatbotController = setupChatbot(
+      data.chatbot,
+      () => quiz.preguntas[state.index],
+      actions
+    );
 
     // ----- Modal de material de estudio -----
     setupMaterialModal(data.materialEstudio);
@@ -686,9 +693,65 @@
     const input = id("chatbot-input");
     const body = id("chatbot-body");
     const chips = id("chatbot-actions");
-    if (!fab || !panel) return;
+    const quota = id("chatbot-help-quota");
+    const sendBtn = form?.querySelector('button[type="submit"]');
+    const chipButtons = chips?.querySelectorAll(".chip") || [];
+    if (!fab || !panel || !form || !input || !body) return null;
 
     let greeted = false;
+    let remainingHelps = TUTOR_HELP_LIMIT;
+    let exhaustedMessageTimer;
+
+    function updateHelpQuota() {
+      const isExhausted = remainingHelps === 0;
+      const isWarning = remainingHelps > 0 && remainingHelps <= 2;
+
+      if (quota) {
+        quota.textContent = isExhausted
+          ? "Sin ayudas"
+          : remainingHelps === 1
+            ? "Última ayuda"
+            : `${remainingHelps} ayudas`;
+        quota.classList.toggle("is-warning", isWarning);
+        quota.classList.toggle("is-exhausted", isExhausted);
+        quota.setAttribute(
+          "aria-label",
+          isExhausted
+            ? "No quedan ayudas del Tutor IA en este intento"
+            : `${remainingHelps} ayudas del Tutor IA disponibles en este intento`
+        );
+      }
+
+      panel.classList.toggle("is-help-exhausted", isExhausted);
+      input.disabled = isExhausted;
+      input.placeholder = isExhausted
+        ? "No quedan ayudas en este intento"
+        : "Escribe tu duda…";
+      if (sendBtn) sendBtn.disabled = isExhausted;
+      chipButtons.forEach((btn) => { btn.disabled = isExhausted; });
+    }
+
+    function useHelp() {
+      if (remainingHelps === 0) return false;
+
+      remainingHelps -= 1;
+      updateHelpQuota();
+
+      if (remainingHelps === 0) {
+        exhaustedMessageTimer = setTimeout(() => {
+          addBotMessage(
+            "Usaste las 5 ayudas de este intento. Revisa las pistas y sigue con tu razonamiento; tendrás nuevas ayudas si vuelves a intentarlo."
+          );
+        }, 600);
+      }
+      return true;
+    }
+
+    function resetHelpLimit() {
+      clearTimeout(exhaustedMessageTimer);
+      remainingHelps = TUTOR_HELP_LIMIT;
+      updateHelpQuota();
+    }
 
     function greet() {
       if (greeted) return;
@@ -704,6 +767,7 @@
 
     fab.addEventListener("click", toggle);
     closeBtn.addEventListener("click", () => { panel.hidden = true; _chatOpen = false; });
+    updateHelpQuota();
 
     // Chips de acciones rápidas: 50/50, pista, concepto, pregunta guía, material
     if (chips && actions) {
@@ -718,7 +782,7 @@
           material: actions.material,
         };
         const fn = map[btn.dataset.action];
-        if (fn) fn();
+        if (fn && useHelp()) fn();
       });
     }
 
@@ -729,6 +793,7 @@
       e.preventDefault();
       const text = input.value.trim();
       if (!text) return;
+      if (!useHelp()) return;
       const um = document.createElement("div");
       um.className = "chat-msg user";
       um.textContent = text;
@@ -750,6 +815,8 @@
       }
       addBotMessage(reply);
     });
+
+    return { resetHelpLimit };
   }
 
   /* ==========================================================

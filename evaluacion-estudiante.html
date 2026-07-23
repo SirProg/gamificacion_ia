@@ -94,7 +94,10 @@
   <!-- Panel del chatbot -->
   <aside class="chatbot" id="chatbot" hidden aria-label="Asistente IA">
     <header class="chatbot-head">
-      <span class="chatbot-title"><span aria-hidden="true">🤖</span> Tutor IA <span class="chatbot-tag">apoyo, no respuestas</span></span>
+      <div class="chatbot-head-main">
+        <span class="chatbot-title"><span aria-hidden="true">🤖</span> Tutor IA <span class="chatbot-tag">apoyo, no respuestas</span></span>
+        <span class="chatbot-help-quota" id="chatbot-help-quota" role="status" aria-live="polite" aria-atomic="true">5 ayudas</span>
+      </div>
       <button type="button" class="chatbot-close" id="chatbot-close" aria-label="Cerrar asistente">✕</button>
     </header>
     <div class="chatbot-body" id="chatbot-body" aria-live="polite"></div>

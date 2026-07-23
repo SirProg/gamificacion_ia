@@ -398,8 +398,15 @@ img { max-width: 100%; }
   display: flex; align-items: center; justify-content: space-between;
   padding: .8rem 1rem; background: linear-gradient(135deg, var(--tech-deep), var(--primary)); color: #fff;
 }
+.chatbot-head-main { min-width: 0; display: flex; align-items: center; gap: .55rem; }
 .chatbot-title { font-weight: 700; display: flex; align-items: center; gap: .4rem; font-size: .98rem; }
 .chatbot-tag { font-size: .62rem; background: rgba(255,255,255,.22); padding: .12rem .45rem; border-radius: 999px; font-weight: 600; }
+.chatbot-help-quota {
+  flex-shrink: 0; padding: .18rem .48rem; border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
+  background: rgba(255,255,255,.14); color: #fff; font-size: .7rem; font-weight: 700; white-space: nowrap;
+}
+.chatbot-help-quota.is-warning { background: var(--gold-soft); border-color: var(--gold-light); color: var(--gold); }
+.chatbot-help-quota.is-exhausted { background: rgba(255,255,255,.1); color: rgba(255,255,255,.82); }
 .chatbot-close { background: transparent; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; line-height: 1; }
 .chatbot-body { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: .7rem; background: var(--bg); }
 .chat-msg { max-width: 82%; padding: .6rem .85rem; border-radius: 14px; font-size: .9rem; line-height: 1.4; }
@@ -421,11 +428,17 @@ img { max-width: 100%; }
 .chip:hover { background: #dcecf1; transform: translateY(-1px); }
 .chip:active { transform: translateY(0); }
 .chip.chip-highlight { background: var(--gold-soft); border-color: var(--gold-light); color: var(--gold); }
+.chip:disabled {
+  cursor: not-allowed; opacity: .58; transform: none; border-color: var(--border);
+  background: #f3f6f8; color: var(--text-muted);
+}
 
 .chatbot-form { display: flex; gap: .5rem; padding: .7rem; border-top: 1px solid var(--border); background: var(--surface); }
 .chatbot-form input { flex: 1; border: 1.5px solid var(--border); border-radius: 999px; padding: .55rem .9rem; font-size: .9rem; font-family: inherit; }
 .chatbot-form input:focus { outline: none; border-color: var(--primary); }
+.chatbot-form input:disabled { cursor: not-allowed; background: #f3f6f8; color: var(--text-muted); }
 .chatbot-form .btn { border-radius: 50%; width: 40px; height: 40px; padding: 0; }
+.chatbot-form .btn:disabled { cursor: not-allowed; opacity: .55; }
 
 /* Toast */
 .toast {
