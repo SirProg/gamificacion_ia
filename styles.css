@@ -425,9 +425,16 @@ img { max-width: 100%; }
   border-radius: 999px; padding: .4rem .75rem; font-size: .8rem; font-weight: 600;
   transition: background .18s, transform .12s;
 }
-.chip:hover { background: #dcecf1; transform: translateY(-1px); }
+.chip:hover:not(:disabled) { background: #dcecf1; transform: translateY(-1px); }
 .chip:active { transform: translateY(0); }
 .chip.chip-highlight { background: var(--gold-soft); border-color: var(--gold-light); color: var(--gold); }
+/* Acción que no consume ayudas */
+.chip.chip-free { background: var(--success-soft); border-color: var(--success); color: var(--success); }
+.chip.chip-free:hover:not(:disabled) { background: #d8ecdf; }
+.chip-free-tag {
+  font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+  background: var(--success); color: #fff; border-radius: 999px; padding: .05rem .35rem; margin-left: .2rem;
+}
 .chip:disabled {
   cursor: not-allowed; opacity: .58; transform: none; border-color: var(--border);
   background: #f3f6f8; color: var(--text-muted);
@@ -439,6 +446,11 @@ img { max-width: 100%; }
 .chatbot-form input:disabled { cursor: not-allowed; background: #f3f6f8; color: var(--text-muted); }
 .chatbot-form .btn { border-radius: 50%; width: 40px; height: 40px; padding: 0; }
 .chatbot-form .btn:disabled { cursor: not-allowed; opacity: .55; }
+
+/* Estado: ayudas agotadas — el chat queda desactivado */
+.chatbot.is-help-exhausted .chatbot-actions,
+.chatbot.is-help-exhausted .chatbot-form { background: #f7f9fa; }
+.chatbot.is-help-exhausted .chatbot-actions { position: relative; }
 
 /* Toast */
 .toast {

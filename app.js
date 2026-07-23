@@ -8,6 +8,9 @@
 
   const DATA_URL = "data.json";
   const TUTOR_HELP_LIMIT = 5;
+  // Acciones del chat que NO gastan ayudas: el material del profesor
+  // es recurso de estudio, no asistencia de IA.
+  const FREE_ACTIONS = new Set(["material"]);
 
   /* Utilidad: cargar el "backend" simulado */
   async function loadData() {
@@ -497,15 +500,16 @@
     // ----- Acciones interactivas del Tutor IA -----
     const actions = {
       // 50/50: elimina dos opciones incorrectas de la pregunta actual
+      // Devuelven true si la acción se realizó y debe descontar una ayuda.
       fifty() {
         const q = quiz.preguntas[state.index];
         if (state.answered) {
-          addBotMessage("Esta pregunta ya la respondiste 😊. Guarda el 50/50 para la siguiente.");
-          return;
+          addBotMessage("Esta pregunta ya la respondiste 😊. Guarda el 50/50 para la siguiente (no te descuento la ayuda).");
+          return false;
         }
         if (fiftyUsed.has(state.index)) {
-          addBotMessage("Ya usaste el 50/50 en esta pregunta. ¡Confía en tu razonamiento! 💪");
-          return;
+          addBotMessage("Ya usaste el 50/50 en esta pregunta. ¡Confía en tu razonamiento! 💪 (no te descuento la ayuda)");
+          return false;
         }
         const buttons = Array.from(el.options.querySelectorAll(".option-btn"));
         const wrong = buttons
@@ -520,22 +524,27 @@
         });
         fiftyUsed.add(state.index);
         addBotMessage(`🎯 Eliminé ${toRemove.length} opción(es) incorrecta(s). ¡Ahora tienes muchas más probabilidades! Piensa bien entre las que quedan.`);
+        return true;
       },
       // Pista breve
       hint() {
         addBotMessage("💡 Pista breve: " + quiz.preguntas[state.index].pistaBreve);
+        return true;
       },
       // Explicación del concepto
       concept() {
         addBotMessage("📖 " + quiz.preguntas[state.index].explicacionConcepto);
+        return true;
       },
       // Pregunta guía (socrática)
       guide() {
         addBotMessage("❓ Para pensarlo tú: " + quiz.preguntas[state.index].preguntaGuia);
+        return true;
       },
       // Abrir material de estudio del profesor
       material() {
         openMaterialModal(quiz.preguntas[state.index].tema);
+        return true;
       },
     };
 
@@ -728,7 +737,10 @@
         ? "No quedan ayudas en este intento"
         : "Escribe tu duda…";
       if (sendBtn) sendBtn.disabled = isExhausted;
-      chipButtons.forEach((btn) => { btn.disabled = isExhausted; });
+      // El material sigue accesible aunque se agoten las ayudas.
+      chipButtons.forEach((btn) => {
+        btn.disabled = isExhausted && !FREE_ACTIONS.has(btn.dataset.action);
+      });
     }
 
     function useHelp() {
@@ -740,7 +752,7 @@
       if (remainingHelps === 0) {
         exhaustedMessageTimer = setTimeout(() => {
           addBotMessage(
-            "Usaste las 5 ayudas de este intento. Revisa las pistas y sigue con tu razonamiento; tendrás nuevas ayudas si vuelves a intentarlo."
+            `Usaste las ${TUTOR_HELP_LIMIT} ayudas de este intento. Revisa las pistas y sigue con tu razonamiento; tendrás nuevas ayudas si vuelves a intentarlo.`
           );
         }, 600);
       }
@@ -781,8 +793,13 @@
           guide: actions.guide,
           material: actions.material,
         };
-        const fn = map[btn.dataset.action];
-        if (fn && useHelp()) fn();
+        const action = btn.dataset.action;
+        const fn = map[action];
+        if (!fn) return;
+        const isFree = FREE_ACTIONS.has(action);
+        if (!isFree && remainingHelps === 0) return;
+        // Se descuenta solo si la acción se aplicó (fifty puede no aplicar) y no es gratuita.
+        if (fn() !== false && !isFree) useHelp();
       });
     }
 
