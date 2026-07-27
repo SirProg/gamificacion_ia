@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte del grupo · EduGamify</title>
+  <meta name="description" content="Reporte imprimible del rendimiento y desempeño de los estudiantes." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app-page report-page">
+  <!-- Barra de control (no se imprime) -->
+  <div class="report-controls no-print">
+    <a class="brand brand-sm" href="dashboard-docente.html">
+      <span class="brand-logo" aria-hidden="true">🎓</span>
+      <span class="brand-name">EduGamify</span>
+    </a>
+    <div class="report-controls-actions">
+      <a href="dashboard-docente.html" class="btn btn-ghost btn-sm">← Volver al dashboard</a>
+      <button type="button" class="btn btn-primary btn-sm" id="btn-print">🖨️ Imprimir / Guardar PDF</button>
+    </div>
+  </div>
+
+  <p class="report-tip no-print">
+    💡 Al imprimir, elige <strong>“Guardar como PDF”</strong> en el destino para obtener el archivo, o envíalo a tu impresora.
+  </p>
+
+  <!-- Documento del reporte (área imprimible) -->
+  <main class="report-sheet" id="report-root">
+    <header class="report-header">
+      <div>
+        <h1 class="report-title"><span aria-hidden="true">🎓</span> Reporte de desempeño del grupo</h1>
+        <p class="report-course" id="report-course">—</p>
+      </div>
+      <div class="report-meta">
+        <p><strong>Docente:</strong> <span id="report-teacher">—</span></p>
+        <p><strong>Estudiantes:</strong> <span id="report-total">—</span></p>
+        <p><strong>Generado:</strong> <span id="report-date">—</span></p>
+      </div>
+    </header>
+
+    <!-- Resumen del grupo -->
+    <section class="report-section">
+      <h2>1. Resumen del grupo</h2>
+      <table class="report-table report-kpis">
+        <tbody>
+          <tr>
+            <th scope="row">Promedio del grupo</th><td id="r-promedio">—</td>
+            <th scope="row">Tasa de participación</th><td id="r-participacion">—</td>
+          </tr>
+          <tr>
+            <th scope="row">Quizzes completados</th><td id="r-quizzes">—</td>
+            <th scope="row">Horas ahorradas (semana)</th><td id="r-tiempo">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Distribución del rendimiento -->
+    <section class="report-section">
+      <h2>2. Distribución del rendimiento</h2>
+      <table class="report-table" id="r-distribucion">
+        <thead><tr><th>Categoría</th><th>Estudiantes</th><th>Proporción</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Temas difíciles -->
+    <section class="report-section">
+      <h2>3. Temas con mayor dificultad</h2>
+      <p class="report-note">Ordenados por tasa de error. Prioriza el refuerzo en los primeros.</p>
+      <table class="report-table" id="r-temas">
+        <thead><tr><th>Tema</th><th>Tasa de error</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Evolución semanal -->
+    <section class="report-section">
+      <h2>4. Evolución del promedio semanal</h2>
+      <table class="report-table" id="r-progreso">
+        <thead><tr><th>Semana</th><th>Promedio</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Participación por día -->
+    <section class="report-section">
+      <h2>5. Participación por día</h2>
+      <table class="report-table" id="r-participacion-dia">
+        <thead><tr><th>Día</th><th>Participación</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Desempeño individual -->
+    <section class="report-section">
+      <h2>6. Desempeño individual de estudiantes</h2>
+      <table class="report-table" id="r-estudiantes">
+        <thead>
+          <tr>
+            <th>Estudiante</th><th>Nivel</th><th>XP</th>
+            <th>Insignias</th><th>Promedio</th><th>Participación</th><th>Estado</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <footer class="report-footer">
+      <p>Documento generado por EduGamify para fines de prueba y seguimiento pedagógico. Los datos corresponden al conjunto de demostración actual.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

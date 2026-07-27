@@ -22,6 +22,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("login-form")) initLogin();
     if (document.getElementById("kpi-promedio")) initDashboard();
+    if (document.getElementById("report-root")) initReport();
     if (document.getElementById("quiz-card") || document.getElementById("quiz-body")) initStudent();
   });
 
@@ -79,6 +80,92 @@
 
     // Gráficos (Chart.js)
     if (window.Chart) renderCharts(g);
+  }
+
+  /* ==========================================================
+     2b) REPORTE IMPRIMIBLE / PDF (docente)
+     ========================================================== */
+  async function initReport() {
+    let data;
+    try {
+      data = await loadData();
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+
+    const { curso, estadisticasGrupo: g, estudiantes } = data;
+
+    // Encabezado
+    setText("report-course", curso.nombre + " · Unidad: " + curso.unidadActual);
+    setText("report-teacher", curso.docente);
+    setText("report-total", curso.totalEstudiantes + " estudiantes");
+    setText("report-date", new Date().toLocaleString("es", {
+      day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit",
+    }));
+
+    // 1. Resumen
+    setText("r-promedio", g.promedioCalificaciones.toFixed(1) + " / 10");
+    setText("r-participacion", g.tasaParticipacion + "%");
+    setText("r-quizzes", g.quizzesCompletados);
+    setText("r-tiempo", g.tiempoAhorradoDocenteHoras + " h");
+
+    // 2. Distribución del rendimiento
+    const dist = g.distribucionRendimiento;
+    const totalDist = dist.alto + dist.medio + dist.bajo || 1;
+    const distRows = [
+      { label: "Alto rendimiento", val: dist.alto, cls: "high" },
+      { label: "Rendimiento medio", val: dist.medio, cls: "mid" },
+      { label: "Necesita apoyo", val: dist.bajo, cls: "low" },
+    ];
+    fillRows("r-distribucion", distRows.map((d) => {
+      const pct = Math.round((d.val / totalDist) * 100);
+      return `<td>${d.label}</td><td>${d.val}</td>
+        <td>${reportBar(pct, d.cls)} ${pct}%</td>`;
+    }));
+
+    // 3. Temas difíciles
+    fillRows("r-temas", g.temasDificiles.map((t) => {
+      const cls = t.tasaError >= 40 ? "low" : t.tasaError >= 25 ? "mid" : "high";
+      return `<td>${t.tema}</td><td>${t.tasaError}%</td><td>${reportBar(t.tasaError, cls)}</td>`;
+    }));
+
+    // 4. Evolución semanal
+    fillRows("r-progreso", g.progresoSemanal.map(
+      (s) => `<td>${s.semana}</td><td>${s.promedio.toFixed(1)}</td>`
+    ));
+
+    // 5. Participación por día
+    fillRows("r-participacion-dia", g.participacionPorDia.map(
+      (d) => `<td>${d.dia}</td><td>${d.porcentaje}%</td>`
+    ));
+
+    // 6. Desempeño individual
+    fillRows("r-estudiantes", estudiantes.map((e) => {
+      const estado = e.promedio >= 8
+        ? '<span class="r-estado high">Destacado</span>'
+        : e.promedio >= 6
+          ? '<span class="r-estado mid">En progreso</span>'
+          : '<span class="r-estado low">Requiere apoyo</span>';
+      const badges = e.insignias.length ? e.insignias.join(" ") : "—";
+      return `<td>${e.avatar} ${e.nombre}</td><td>Nivel ${e.nivel}</td>
+        <td>${e.xp.toLocaleString("es")}</td><td>${badges}</td>
+        <td>${e.promedio.toFixed(1)}</td><td>${e.participacion}%</td><td>${estado}</td>`;
+    }));
+
+    // Botón imprimir
+    const btnPrint = id("btn-print");
+    if (btnPrint) btnPrint.addEventListener("click", () => window.print());
+  }
+
+  function reportBar(pct, cls) {
+    const width = Math.max(0, Math.min(100, pct));
+    return `<span class="r-bar"><span class="r-bar-fill ${cls}" style="width:${width}%"></span></span>`;
+  }
+
+  function fillRows(tableId, rowsHtml) {
+    const tbody = id(tableId).querySelector("tbody");
+    tbody.innerHTML = rowsHtml.map((r) => `<tr>${r}</tr>`).join("");
   }
 
   function renderStudentsTable(estudiantes) {
