@@ -615,6 +615,21 @@ img { max-width: 100%; }
 
 .report-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dfe4e9; font-size: .78rem; color: var(--text-muted); }
 
+/* Responsive del reporte (pantalla; la impresión usa @media print) */
+@media (max-width: 720px) {
+  .report-controls { justify-content: center; }
+  .report-sheet { padding: 1.5rem 1.2rem; margin: .8rem auto 2rem; }
+  .report-header { flex-direction: column; gap: .5rem; }
+  .report-title { font-size: 1.3rem; }
+  .report-meta { text-align: left; min-width: 0; }
+  /* Tablas anchas: scroll horizontal contenido, sin desbordar la página */
+  .report-table {
+    display: block; width: 100%;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap;
+  }
+  .r-bar { width: 84px; }
+}
+
 /* ---------- Reglas de IMPRESIÓN ---------- */
 @media print {
   @page { size: A4; margin: 14mm; }
@@ -624,6 +639,8 @@ img { max-width: 100%; }
     max-width: none; margin: 0; padding: 0; border-radius: 0; box-shadow: none;
   }
   .report-section { break-inside: avoid; page-break-inside: avoid; }
+  /* Restaura el layout de tabla por si el ancho de página activó el modo scroll */
+  .report-table { display: table !important; width: 100% !important; white-space: normal !important; overflow: visible !important; }
   .report-table thead { display: table-header-group; }
   .report-table tr { break-inside: avoid; }
   /* Asegura que los colores de barras y estados se impriman */
